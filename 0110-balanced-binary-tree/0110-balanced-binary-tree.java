@@ -20,7 +20,9 @@ class Solution {
         int leftHeight=findHeight(root.left);
         int rightHeight=findHeight(root.right);
 
-        return leftHeight!=0 && rightHeight!=0 && Math.abs(leftHeight-rightHeight)<=1;
+        if(Math.abs(leftHeight-rightHeight)>1)return false;
+
+        return isBalanced(root.left) && isBalanced(root.right);
     }
 
     int findHeight(TreeNode root){
