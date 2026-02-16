@@ -1,40 +1,40 @@
 class Solution {
-    public boolean dfs(int node,boolean[] vis,boolean rec[],List<List<Integer>>ls){
-        vis[node]=true;
-        rec[node]=true;
+    public boolean canFinish(int v, int[][] edges) {
+        ArrayList<ArrayList<Integer>>arr=new ArrayList<>();
 
-        for(int nei:ls.get(node)){
-            if(!vis[nei]){
-                if(dfs(nei,vis,rec,ls)){
-                    return true;
-                }
-            }if(rec[nei]){
-                return true;
-            }
+        for(int i=0;i<v;i++){
+            arr.add(new ArrayList<>());
         }
-        rec[node]=false;
-        return false;
-    }
-    public boolean canFinish(int V, int[][] prerequisites) {
-        boolean vis[]=new boolean[V];
-        boolean resStack[]=new boolean[V];
 
-        List<List<Integer>>ls=new ArrayList<>();
-        for(int i=0;i<V;i++){
-            ls.add(new ArrayList<>());
-        }
-        for(int edge[]:prerequisites){
+        for(int edge[]:edges){
             int u=edge[0];
-            int v=edge[1];
-            ls.get(v).add(u);
+            int m=edge[1];
+            arr.get(m).add(u);
         }
-        for(int i=0;i<V;i++){
+
+        boolean vis[]=new boolean[v];
+        boolean rec[]=new boolean[v];
+
+        for(int i=0;i<v;i++){
             if(!vis[i]){
-                if(dfs(i,vis,resStack,ls)){
+                if(dfs(vis,rec,arr,i)){
                     return false;
                 }
             }
         }
         return true;
+    }
+    boolean dfs(boolean vis[],boolean rec[],ArrayList<ArrayList<Integer>>arr,int node){
+        vis[node]=true;
+        rec[node]=true;
+
+        for(int m:arr.get(node)){
+            if(!vis[m]){
+                if(dfs(vis,rec,arr,m))return true;
+            }
+            if(rec[m])return true;
+        }
+        rec[node]=false;
+        return false;
     }
 }
