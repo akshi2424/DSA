@@ -1,47 +1,47 @@
 class Solution {
-    public boolean dfs(int node,boolean vis[],boolean rec[],Stack<Integer>st,List<List<Integer>>ls){
+    boolean dfs(boolean vis[],boolean rec[],ArrayList<ArrayList<Integer>>arr,Stack<Integer>st,int node){
         vis[node]=true;
         rec[node]=true;
 
-        for(int n:ls.get(node)){
+        for(int n:arr.get(node)){
             if(!vis[n]){
-                if(dfs(n,vis,rec,st,ls))return true;
+                if(dfs(vis,rec,arr,st,n))return true;
             }if(rec[n])return true;
         }
-        st.push(node);
         rec[node]=false;
+        st.push(node);
         return false;
     }
-    
-    public int[] findOrder(int V, int[][] prerequisites) {
-        List<List<Integer>>ls=new ArrayList<>();
-
-        for(int i=0;i<V;i++){
-            ls.add(new ArrayList<>());
+    public int[] findOrder(int v, int[][] edges) {
+        ArrayList<ArrayList<Integer>>arr=new ArrayList<>();
+        
+        for(int i=0;i<v;i++){
+            arr.add(new ArrayList<>());
         }
-        for(int edge[]:prerequisites){
+
+        for(int edge[]:edges){
             int u=edge[0];
-            int v=edge[1];
-            ls.get(v).add(u);
+            int m=edge[1];
+            arr.get(m).add(u);
         }
-
-        boolean rec[]=new boolean[V];
-        boolean vis[]=new boolean[V];
+        
+        boolean rec[]=new boolean[v];
+        boolean vis[]=new boolean[v];
         Stack<Integer>st=new Stack<>();
 
-        for(int i=0;i<V;i++){
+        for(int i=0;i<v;i++){
             if(!vis[i]){
-                if(dfs(i,vis,rec,st,ls)){
+                if(dfs(vis,rec,arr,st,i)){
                     return new int[]{};
                 }
             }
         }
 
-        int ar[]=new int[V];
-        int j=0;
-       while(!st.isEmpty()){
-        ar[j++]=st.pop();
-       }
-       return ar;
+        int ans[]=new int[v];
+        int i=0;
+        while(!st.isEmpty()){
+            ans[i++]=st.pop();
+        }
+        return ans;
     }
 }
