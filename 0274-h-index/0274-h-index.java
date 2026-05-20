@@ -1,19 +1,20 @@
 class Solution {
     public int hIndex(int[] citations) {
-        int papers = citations.length;
-        int[] citationBuckets = new int[papers + 1];
+        Arrays.sort(citations);
 
-        for (int citation : citations) {
-            citationBuckets[Math.min(citation, papers)]++;
-        }
+        int n = citations.length;
+        int h = 0;
 
-        int cumulativePapers = 0;
-        for (int hIndex = papers; hIndex >= 0; hIndex--) {
-            cumulativePapers += citationBuckets[hIndex];
-            if (cumulativePapers >= hIndex) {
-                return hIndex;
+        for(int i = 0; i < n; i++) {
+
+            int papers = n - i;
+
+            if(citations[i] >= papers) {
+                h = papers;
+                break;
             }
         }
-        return 0;        
+
+        return h;      
     }
 }
